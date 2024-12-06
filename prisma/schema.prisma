@@ -11,14 +11,16 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  username   String    @unique
-  name       String
-  created_at DateTime  @default(now())
-  email      String?   @unique
-  avatar_url String?
-  accounts   Account[]
-  sessions   Session[]
+  id               String             @id @default(uuid())
+  username         String             @unique
+  name             String
+  created_at       DateTime           @default(now())
+  email            String?            @unique
+  avatar_url       String?
+  bio              String?
+  accounts         Account[]
+  sessions         Session[]
+  UserTimeInterval UserTimeInterval[]
 
   @@map("users")
 }
@@ -51,4 +53,16 @@ model Session {
   accessToken   String   @unique
 
   @@map("sessions")
+}
+
+model UserTimeInterval {
+  id                    String @id @default(uuid())
+  week_day              Int
+  time_start_in_minutes Int
+  time_end_in_minutes   Int
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("user_time_intervals")
 }
